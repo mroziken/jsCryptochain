@@ -27,6 +27,7 @@ class Blockchain{
     }
 
     static isValidChain(chain){
+
         //console.log(chain);
         // test if first block is genesis block
         if(! shallowEqual(Blockchain.firstBlock(chain),Block.genesis())){
@@ -39,10 +40,14 @@ class Blockchain{
         //     return false;
         // }
         for (let i=1; i<chain.length; i++){
-            const {timestamp, lastHash, data, hash} = chain[i];
+            const {timestamp, lastHash, difficultyLevel, data, hash} = chain[i];
             const actualLastHash = chain[i-1].hash;
+            const lastDifficultyLevel = chain[i-1].difficultyLevel;
             if(lastHash !== actualLastHash){
                 //console.warn("incorrect lastHash block of block: " + i);
+                return false;
+            }
+            if (Math.abs(lastDifficultyLevel-difficultyLevel)>1){
                 return false;
             }
         }
@@ -57,6 +62,7 @@ class Blockchain{
             //console.warn("incorrect hash block");
             return false;
         }
+
         return true;
     };
 
