@@ -1,5 +1,5 @@
 const Block = require('./block.js');
-const cryptoHash = require('../util/crypto-hash');
+const {cryptoHash} = require('../util');
 const shallowEqual = require('../shallowEqual.js');
 
 class Blockchain{
