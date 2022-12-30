@@ -26,6 +26,12 @@ class Transaction{
         return input;
     }
 
+    update({senderWallet, recepient, amount}){
+        this.outputMap[recepient]=amount;
+        this.outputMap[senderWallet.publicKey] = this.outputMap[senderWallet.publicKey] - amount;
+        this.input = this.createInput({senderWallet,outputMap: this.outputMap});
+    }
+
     static validTransaction(transaction){
         const {input: {address, amount, signature}, outputMap} = transaction;
         const outputTotal = Object.values(outputMap)
