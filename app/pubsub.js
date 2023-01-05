@@ -1,4 +1,6 @@
 const redis = require('redis');
+const { parse } = require('uuid');
+const Block = require('../blockchain/block');
 
 const CHANNEL = {
     TEST: 'TEST',
@@ -8,6 +10,7 @@ const CHANNEL = {
 
 class PubSub{
     constructor({blockchain, transactionPool}){
+        console.log('In constructor of PubSub');
         this.blockchain = blockchain;
         this.transactionPool = transactionPool;
         this.publisher = redis.createClient({url: 'redis://default:redispw@localhost:49153'});
@@ -27,9 +30,19 @@ class PubSub{
 
         switch(channel){
             case CHANNEL.BLOCKCHAIN:
-                this.blockchain.replaceChain(parsedMessage);
+                console.log('Before conversion parsedMessage: ', parsedMessage);
+                for(let i=0; i<parsedMessage.length; i++){
+                    parsedMessage[i] = new Block(parsedMessage[i]);
+                }
+                console.log('After conversion parsedMessage: ', parsedMessage);
+                this.blockchain.replaceChain(parsedMessage, () => {
+                    this.transactionPool.clearBlockchainTransactions({
+                        chain: parsedMessage
+                    });
+                });
                 break;
             case CHANNEL.TRANSACTION:
+                console.log(`TRANSACTION channel: ${parsedMessage}`)
                 this.transactionPool.setTransaction(parsedMessage);
                 break;
             default:

@@ -4,6 +4,7 @@ const {ec,cryptoHash} = require('../util');
 
 class Wallet{
     constructor(){
+        console.log('In constructor of Wallet');
         this.balance = STARTING_BALANCE;
 
         this.keyPair = ec.genKeyPair();

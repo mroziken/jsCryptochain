@@ -5,6 +5,7 @@ const Blockchain = require('./blockchain');
 const PubSub = require('./app/pubsub.js');
 const TransactionPool = require('./wallet/transaction-pool');
 const Wallet = require('./wallet');
+const TransactionMinner = require('./app/transaction-minner');
 
 
 const app = express();
@@ -12,6 +13,7 @@ const blockchain = new Blockchain();
 const transactionPool = new TransactionPool();
 const wallet = new Wallet();
 const pubsub = new PubSub({blockchain, transactionPool});
+const transactionMiner = new TransactionMinner({blockchain, transactionPool, wallet, pubsub});
 
 const DEFAULT_PORT=3000;
 const ROOT_NODE_ADDRESS = `http://localhost:${DEFAULT_PORT}`
@@ -20,7 +22,7 @@ app.use(bodyParser.json());
 
 app.post('/api/mine', (req,res) => {
     console.log("In api/mine");
-    console.log("Request: ", req);
+    //console.log("Request: ", req);
     const {data} = req.body;
     blockchain.addBlock({data});
 
@@ -31,7 +33,7 @@ app.post('/api/mine', (req,res) => {
 
 app.post('/api/transact', (req,res) => {
     console.log("In api/transact");
-    console.log("Request: ", req);
+    //console.log("Request: ", req);
     const {recepient, amount} = req.body;
 
     let transaction = transactionPool.existingTransaction({inputAddress: wallet.publicKey});
@@ -57,27 +59,36 @@ app.post('/api/transact', (req,res) => {
 
 app.get('/api/transaction-pool-map', (req,res) => {
     console.log("In api/transaction-pool-map");
-    console.log("Request: ", req);
+    //console.log("Request: ", req);
     res.json(transactionPool.transactionMap);
 });
 
 app.get('/api/blocks', (req, res) => {
-    console.log("In api/blocks");
-    console.log("Request: ", req);
+    console.log("In /api/blocks");
+    //console.log("Request: ", req);
     res.json(blockchain.chain);
 });
 
+app.get('/api/mine-transactions', (req, res) => {
+    console.log("In /api/mine-transactions");
+    //console.log("Request: ", req);
+    transactionMiner.mineTransaction();
+    res.redirect('/api/blocks');
+});
+
 const synchChains = () => {
+    console.log('In synchChains');
     request({url: `${ROOT_NODE_ADDRESS}/api/blocks`}, (error, response,body) => {
         if(!error & response.statusCode === 200) {
             const rootChain = JSON.parse(body);
-            console.log('replace chain with a such chain ', rootChain)
+            console.log('call replaceChain: ', rootChain)
             blockchain.replaceChain(rootChain);
         }
     })
 }
 
 const synchTransactionPool = () => {
+    console.log('In synchTransactionPool');
     request({url: `${ROOT_NODE_ADDRESS}/api/transaction-pool-map`}, (error, response,body) => {
         if(!error & response.statusCode === 200) {
             const transactionMap = JSON.parse(body);
