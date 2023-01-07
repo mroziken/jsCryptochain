@@ -4,6 +4,7 @@ const { REWARD_INPUT, MINING_REWARD} = require('../config');
 
 class Transaction{
     constructor({senderWallet, recepient, amount,outputMap, input}){
+        console.log('In Transaction constructor');
         this.id = uuid();
         this.outputMap = outputMap || this.createOutputMap({senderWallet,recepient,amount});
         this.input = input || this.createInput({senderWallet, outputMap: this.outputMap});
