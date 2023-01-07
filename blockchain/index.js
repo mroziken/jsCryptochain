@@ -8,16 +8,16 @@ class Blockchain{
         console.log('In consturctor of Blockchain');
         this.chain = [];
         this.chain.push(Block.genesis());
-        console.log(this);
+        //console.log(this);
     }
 
     addBlock({data}){
         console.log('In addBlock');
         const lastBlock = Blockchain.lastBlock(this.chain);
         const newBlock = Block.mineBlock({lastBlock,data});
-        console.log('Old chain:', this.chain);
+        //console.log('Old chain:', this.chain);
         this.chain.push(newBlock);
-        console.log('New chain:', this.chain);
+        //console.log('New chain:', this.chain);
     };
 
     static firstBlock(chain){
@@ -75,7 +75,7 @@ class Blockchain{
 
     replaceChain(newChain, onSuccess){
         console.log('In replaceChain');
-        console.log('current chain:', this.chain, 'proposed chain:', newChain);
+        //console.log('current chain:', this.chain, 'proposed chain:', newChain);
         if(newChain.length <= this.chain.length) {
             console.log('too short chain', newChain.length, this.chain.length);
             return;

@@ -21,6 +21,23 @@ class Wallet{
 
     }
 
+    static calculateBalance({chain, address}){
+        let outputTotal = 0;
+
+        for (let i=1; i<chain.length; i++){
+            const block = chain[i];
+
+            for (let tranaction of block.data){
+                const addressOutput = tranaction.outputMap[address];
+
+                if(addressOutput){
+                    outputTotal = outputTotal + addressOutput;
+                }
+            }
+        }
+        return STARTING_BALANCE + outputTotal;
+    }
+
 }
 
 module.exports = Wallet;
