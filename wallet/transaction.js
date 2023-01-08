@@ -4,7 +4,7 @@ const { REWARD_INPUT, MINING_REWARD} = require('../config');
 
 class Transaction{
     constructor({senderWallet, recepient, amount,outputMap, input}){
-        console.log('In Transaction constructor');
+        //console.log('In Transaction constructor');
         this.id = uuid();
         this.outputMap = outputMap || this.createOutputMap({senderWallet,recepient,amount});
         this.input = input || this.createInput({senderWallet, outputMap: this.outputMap});
@@ -46,7 +46,7 @@ class Transaction{
     static rewardTransaction({minerWallet}){
         return new this({
             input: REWARD_INPUT,
-            outputMap: { [minerWallet.publicKey]: minerWallet.balance + MINING_REWARD}
+            outputMap: { [minerWallet.publicKey]: MINING_REWARD}
         });
     }
 
@@ -59,7 +59,7 @@ class Transaction{
             console.error(outputMap);
             return false;
         }
-
+        
         if(!verifySignature({publicKey:address, data: outputMap, signature})){
             console.error(`Ivalid signagture from ${address}`);
             return false;

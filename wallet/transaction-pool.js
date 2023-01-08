@@ -2,7 +2,7 @@ const Transaction = require('./transaction');
 
 class TransactionPool {
     constructor() {
-        console.log('In consturctor of TransactionPool');
+        //console.log('In consturctor of TransactionPool');
         this.transactionMap = {};
     }
 

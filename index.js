@@ -42,7 +42,7 @@ app.post('/api/transact', (req,res) => {
         if(transaction){
             transaction.update({senderWallet: wallet, recepient, amount});
         } else {
-            transaction = wallet.createTransaction({recepient,amount});
+            transaction = wallet.createTransaction({recepient,amount, chain: blockchain.chain});
         }
     } catch(error){
         return res.status(400).json({
@@ -75,6 +75,14 @@ app.get('/api/mine-transactions', (req, res) => {
     transactionMiner.mineTransaction();
     res.redirect('/api/blocks');
 });
+
+app.get('/api/wallet-info', (req,res) => {
+    const address = wallet.publicKey;
+    res.json({
+        address,
+        balance: Wallet.calculateBalance({chain: blockchain.chain, address})
+    })
+})
 
 const synchChains = () => {
     console.log('In synchChains');

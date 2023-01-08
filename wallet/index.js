@@ -4,7 +4,7 @@ const {ec,cryptoHash} = require('../util');
 
 class Wallet{
     constructor(){
-        console.log('In constructor of Wallet');
+        //console.log('In constructor of Wallet');
         this.balance = STARTING_BALANCE;
 
         this.keyPair = ec.genKeyPair();
@@ -16,7 +16,7 @@ class Wallet{
     }
 
     createTransaction({recepient, amount, chain}){
-        console.log('In createTransaction');
+        //console.log('In createTransaction');
         if(chain){
             this.balance = Wallet.calculateBalance({
                 chain,

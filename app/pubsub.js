@@ -35,7 +35,7 @@ class PubSub{
                     parsedMessage[i] = new Block(parsedMessage[i]);
                 }
                 console.log('After conversion parsedMessage: ', parsedMessage);
-                this.blockchain.replaceChain(parsedMessage, () => {
+                this.blockchain.replaceChain(parsedMessage, true, () => {
                     this.transactionPool.clearBlockchainTransactions({
                         chain: parsedMessage
                     });
