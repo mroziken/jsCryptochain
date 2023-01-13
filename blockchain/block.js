@@ -4,6 +4,7 @@ const hexToBinary = require('hex-to-binary');
 
 class Block{
     constructor({timestamp,lastHash,hash,data,difficultyLevel,nonce}){
+        console.log('Block constructor: ', {timestamp,lastHash,hash,data,difficultyLevel,nonce})
         this.timestamp = timestamp;
         this.lastHash = lastHash;
         this.data = data;

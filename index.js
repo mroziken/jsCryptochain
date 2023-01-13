@@ -6,6 +6,7 @@ const PubSub = require('./app/pubsub.js');
 const TransactionPool = require('./wallet/transaction-pool');
 const Wallet = require('./wallet');
 const TransactionMinner = require('./app/transaction-minner');
+const path = require('path')
 
 
 const app = express();
@@ -19,6 +20,7 @@ const DEFAULT_PORT=3000;
 const ROOT_NODE_ADDRESS = `http://localhost:${DEFAULT_PORT}`
 
 app.use(bodyParser.json());
+app.use(express.static(path.join(__dirname,'client/dist')));
 
 app.post('/api/mine', (req,res) => {
     console.log("In api/mine");
@@ -82,6 +84,10 @@ app.get('/api/wallet-info', (req,res) => {
         address,
         balance: Wallet.calculateBalance({chain: blockchain.chain, address})
     })
+})
+
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'client/dist/index.html'));
 })
 
 const synchChains = () => {
