@@ -13,8 +13,8 @@ class PubSub{
         console.log('In constructor of PubSub');
         this.blockchain = blockchain;
         this.transactionPool = transactionPool;
-        this.publisher = redis.createClient({url: 'redis://default:redispw@localhost:49153'});
-        this.subscriber = redis.createClient({url: 'redis://default:redispw@localhost:49153'});
+        this.publisher = redis.createClient({url: 'redis://default:redispw@localhost:32769'});
+        this.subscriber = redis.createClient({url: 'redis://default:redispw@localhost:32769'});
 
         this.subscribeToChannels();
 
