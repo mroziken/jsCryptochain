@@ -37,3 +37,7 @@ a, a:hover {
     color: #e66;
     text-decoration: underline
 }
+
+.inputField {
+    color: black;
+}
