@@ -16,7 +16,7 @@ class ConductTransaction extends Component{
     }
 
     conductTransaction = () => {
-        console.log('conductTransaction this.state', this.state)
+        console.log('conductTransaction ', this.state)
         const {recipient, amount} = this.state;
 
         fetch('http://localhost:3000/api/transact', {

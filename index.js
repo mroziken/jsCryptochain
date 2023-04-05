@@ -34,17 +34,17 @@ app.post('/api/mine', (req,res) => {
 });
 
 app.post('/api/transact', (req,res) => {
-    console.log("In api/transact");
-    //console.log("Request: ", req);
-    const {recepient, amount} = req.body;
+    //console.log("In api/transact");
+    console.log("Request: ", req.body);
+    const {recipient, amount} = req.body;
 
     let transaction = transactionPool.existingTransaction({inputAddress: wallet.publicKey});
     
     try{
         if(transaction){
-            transaction.update({senderWallet: wallet, recepient, amount});
+            transaction.update({senderWallet: wallet, recipient, amount});
         } else {
-            transaction = wallet.createTransaction({recepient,amount, chain: blockchain.chain});
+            transaction = wallet.createTransaction({recipient,amount, chain: blockchain.chain});
         }
     } catch(error){
         return res.status(400).json({
@@ -62,6 +62,7 @@ app.post('/api/transact', (req,res) => {
 app.get('/api/transaction-pool-map', (req,res) => {
     console.log("In api/transaction-pool-map");
     //console.log("Request: ", req);
+    console.log('transactionPool.transactionMap',transactionPool.transactionMap);
     res.json(transactionPool.transactionMap);
 });
 
