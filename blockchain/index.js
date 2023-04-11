@@ -15,7 +15,7 @@ class Blockchain{
     }
 
     addBlock({data}){
-        //console.log('In addBlock');
+        console.log('In addBlock');
         const lastBlock = Blockchain.lastBlock(this.chain);
         const newBlock = Block.mineBlock({lastBlock,data});
         //console.log('Old chain:', this.chain);
